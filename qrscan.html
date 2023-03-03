@@ -17,7 +17,7 @@
       <div id="qrRes" class="box"></div>
     </div>
     <div class="row2">
-      <button onclick="qrScanner.start();">start</button>
+      <button onclick="scanCam();">start</button>
       <button onclick="qrScanner.stop();">stop</button>
     </div>
     <div>
@@ -36,10 +36,16 @@
 <script src="./js/qr-scanner.umd.min.js"></script>
 <script>
   let camPrev = document.getElementById("qrvideo");
+  async function scanCam(){
+    document.getElementById("qrvideo").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("qrRes").innerHTML = "";
+    qrScanner.start()
+  }
   const qrScanner = new QrScanner(
     camPrev,
     result => setTimeout(prtRes,500,result),
-    {highlightScanRegion: true},
+    {highlightScanRegion: true,maxScansPerSecond:1},
   );
 
   async function scanFile(){
