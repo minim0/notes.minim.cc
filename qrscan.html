@@ -12,6 +12,7 @@
   <div class="pad20">
     <div id="video-container">
       <video id="qr-video" class="box"></video>
+      <div id="overlay"></div>
     </div>
     <div class="row2">
       <button onclick="qrScanner.start();">start</button>
@@ -36,7 +37,7 @@
   const qrScanner = new QrScanner(
     camPrev,
     result => prtRes(result),
-    {returnDetailedScanResult: false },
+    {highlightScanRegion: true },
   );
 
   async function scanFile(){
@@ -44,6 +45,7 @@
     QrScanner.scanImage(nFile, { returnDetailedScanResult: false })
             .then(result => prtResFile(result))
             .catch(e => setResult(fileQrResult, { data: e || 'No QR code found.' }));
+    scanner._updateOverlay();
   };
 
   async function prtRes(res0){
