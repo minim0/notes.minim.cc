@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/qr-creator/dist/qr-creator.min.js"></script>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/minim0/assets/minim.png" type="image/x-icon">
+    <link rel="stylesheet" href="minim.css">
+    <title>minim notes: Nimiq QR Code Creator</title>
+</head>
+<body>
+    <div class="splitbody">
+        <div id="encryptDIV">
+            <div id="qrbox" class="canvasbox"></div>
+            <div class="box">
+                <span>Source: <a href="https://github.com/nimiq/qr-creator">Nimiq QR Creator &nearr;</a> </span>
+            </div>
+        </div>
+        <div class="vl"></div>
+        <div id="decryptDIV">
+            <span class="title">Parameter</span><hr>
+            <label>Content
+                <textarea name="" id="nContent" onchange="renderQr()">Write Something...</textarea>
+            </label>
+            <label>Error correction:
+                <select id="nECLevel" onchange="renderQr()">
+                <option value="L" label="Low, 7%"></option>
+                <option value="M" label="Medium, 15%"></option>
+                <option value="Q" label="Quarter, 25%"></option>
+                <option value="H" label="High, 30%" selected=""></option>
+                </select>
+            </label>
+            <div class="row3">
+                <label>Line Color:
+                    <input id="nColor" type="color" value="#0064a8" onchange="renderQr()">
+                </label>
+                <label>Transparent:
+                    <select id="cBGColor" onchange="renderQr()">
+                        <option value="1" label="Yes"></option>
+                        <option value="0" label="No"></option>
+                    </select>
+                </label>
+                <div id="slBG" onchange="renderQr()">
+                    <label>Background:
+                        <input id="nBGColor" type="color">
+                    </label>
+                </div>
+            </div>
+            <div class="row2">
+                <label>Radius:
+                    <input id="nRadius" type="range" value="0.2" step="0.05" min="0" max="0.5" onchange="renderQr()">
+                </label> 
+                <label>Size:
+                    <input id="nSize" type="range" value="500" step="10" min="20" max="1000" onchange="renderQr()">
+                </label>
+            </div>
+            <div class="box">
+                <span>Current Parameter</span>
+                <pre id="paramBox"></pre>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function renderQr() {
+        document.querySelector('#qrbox').innerHTML=""
+        nTxt = document.getElementById("nContent").value;
+        nRad = document.getElementById("nRadius").value;
+        nECL = document.getElementById("nECLevel").value;
+        nCol = document.getElementById("nColor").value;
+        nSze = document.getElementById("nSize").value;
+        if (document.getElementById('cBGColor').value==="1") {
+            nBgC = null;
+        } else {
+            nBgC = document.getElementById("nBGColor").value;
+        }
+        let qrParams= JSON.stringify({text:nTxt,radius:nRad,ecLevel:nECL,fill:nCol,background:nBgC,size:nSze},null," ");
+        console.clear();
+        console.log("new parameter:\n" +qrParams);paramBox
+        document.getElementById("paramBox").innerHTML=qrParams;
+
+      QrCreator.render({
+            text: nTxt,
+            radius:nRad, // 0.0 to 0.5
+            ecLevel: nECL, // L, M, Q, H
+            fill: nCol, // foreground color
+            background: nBgC, // color or null for transparent
+            size: nSze // in pixels
+        }, document.querySelector('#qrbox'));
+    }
+    renderQr();
+  </script>
+  <script>
+    function getBG(){
+        var noBG = document.getElementById("cBGColor");
+        var slBG = document.getElementById("slBG");
+        if (noBG.checked == true){
+            slBG.style.display = "none";
+            renderQr();
+        } else {
+            slBG.style.display = "block";
+            renderQr();
+        }
+    }
+  </script>
+
+</body>
+</html>
