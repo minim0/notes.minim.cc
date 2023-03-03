@@ -147,3 +147,6 @@ a{
     text-decoration: underline;
     cursor: pointer;
 }
+.pad20 {
+  padding: 20px;
+}
