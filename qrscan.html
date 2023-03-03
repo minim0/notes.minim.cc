@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <link rel="stylesheet" href="./minim.css">
   <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/minim0/assets/minim.png" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/qr-creator/dist/qr-creator.min.js"></script>
   <title>minim notes: Nimiq QR Scanner</title>
 </head>
 <body>
-  <div class="pad20">
-    <div id="video-container">
-      <video id="qr-video" class="box"></video>
-      <div id="overlay"></div>
+  <div class="pad20 mx600">
+    <div id="videocontainer">
+      <video id="qrvideo" class="box"></video>
+      <div id="overlay" class=""></div>
+      <div id="qrRes" class="box"></div>
     </div>
     <div class="row2">
       <button onclick="qrScanner.start();">start</button>
@@ -33,11 +35,11 @@
 
 <script src="./js/qr-scanner.umd.min.js"></script>
 <script>
-  let camPrev = document.getElementById("qr-video");
+  let camPrev = document.getElementById("qrvideo");
   const qrScanner = new QrScanner(
     camPrev,
     result => prtRes(result),
-    {highlightScanRegion: true },
+    {highlightScanRegion: true},
   );
 
   async function scanFile(){
@@ -49,12 +51,24 @@
   };
 
   async function prtRes(res0){
-    console.log('decoded qr code:', res0)
-    document.getElementById("cam-qr-result").innerHTML = res0.data
+    console.log('decoded qr code:', res0.data);
+    document.getElementById("cam-qr-result").innerHTML = res0.data;
+    document.getElementById("qrvideo").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("qrRes").innerHTML = "";
+    qrScanner.stop();
+    QrCreator.render({
+            text: res0.data,
+            radius:"0.2", // 0.0 to 0.5
+            ecLevel: "H", // L, M, Q, H
+            fill: "#000000", // foreground color
+            background: "#FFFFFF", // color or null for transparent
+            size: "500" // in pixels
+        }, document.querySelector('#qrRes'));
   }
   async function prtResFile(res0){
-    console.log('decoded qr code file:', res0)
-    document.getElementById("file-qr-result").innerHTML = res0.data
+    console.log('decoded qr code file:', res0.data);
+    document.getElementById("file-qr-result").innerHTML = res0.data;
   }
 
  

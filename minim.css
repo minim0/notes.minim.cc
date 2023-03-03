@@ -150,3 +150,8 @@ a{
 .pad20 {
   padding: 20px;
 }
+.mx600 {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
