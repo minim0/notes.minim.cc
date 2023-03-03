@@ -38,7 +38,7 @@
   let camPrev = document.getElementById("qrvideo");
   const qrScanner = new QrScanner(
     camPrev,
-    result => prtRes(result),
+    result => setTimeout(prtRes,500,result),
     {highlightScanRegion: true},
   );
 
